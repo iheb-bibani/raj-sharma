@@ -2,7 +2,6 @@ import yfinance as yf
 import pandas as pd
 import streamlit as st
 import numpy as np
-import talib as ta
 from PIL import Image
 
 from sklearn.ensemble import RandomForestRegressor
