@@ -31,7 +31,7 @@ selected_timeframe = st.sidebar.selectbox('SELECT YOUR TIMEFRAME : ', timeframes
 selected_model = st.sidebar.selectbox('SELECT YOUR MODEL : ', models)
 
 
-st.subheader('Selected Cryptocurrency Low & High')
+#st.subheader('Selected Cryptocurrency Low & High')
 
 if selected_ticker:
 
@@ -41,19 +41,17 @@ if selected_ticker:
                        ignore_tz=True,
                        prepost=False)
 
-    df = st.dataframe(data[['High','Low']])
-
     # Feature Engineering
 
-    data['sma_High'] = ta.SMA(data['High'], timeperiod=10)
-    data['sma_Low'] = ta.SMA(data['Low'], timeperiod=10)
+    data['shift_High_1'] = data['High'].shift().fillna(data['High'].median())
+    data['shift_Low_1'] = data['Low'].shift().fillna(data['Low'].median())
 
-    data['rsi_High'] = ta.RSI(data['High'], timeperiod=14)
-    data['rsi_Low'] = ta.RSI(data['Low'], timeperiod=14)
+    data['shift_High_2'] = data['High'].shift(2).fillna(data['High'].median())
+    data['shift_Low_2'] = data['Low'].shift(2).fillna(data['Low'].median())
 
     # Feature Selection
 
-    X = data[['sma_High', 'sma_Low', 'rsi_High', 'rsi_Low']]
+    X = data[['shift_High_1', 'shift_Low_1', 'shift_High_2', 'shift_Low_2']]
     y = data[['High', 'Low']]
 
     X = X[14:]
